@@ -1,6 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser') 
 const app = express()
+const cors = require('cors')
 
 let persons = [
   {
@@ -25,6 +26,7 @@ let persons = [
   }
 ]
 app.use(bodyParser.json())
+app.use(cors())
 
 const generateId = () => {
   const maxId =
@@ -68,6 +70,7 @@ app.delete('/persons/:id', (request, response) => {
 
 app.post('/api/persons', (request, response) => {
   const body = request.body
+  console.log(body)
 
   if (body.name === undefined || body.number === undefined) {
     return response.status(400).json({ error: 'content missing' })
@@ -87,7 +90,7 @@ app.post('/api/persons', (request, response) => {
   response.json(person)
 })
 
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
